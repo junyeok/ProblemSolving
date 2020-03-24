@@ -20,7 +20,6 @@ public:
 
     for(iter; iter != nums.end();) {
       int curr_num = *iter;
-      int prev_num = *(std::prev(iter,1));
       int curr_max = std::max(
         prev_min * curr_num,
         std::max(curr_num * prev_max, curr_num)
