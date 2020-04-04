@@ -2,7 +2,7 @@
 #include <vector>
 #include <limits>
 
-class Solution {
+class MaxProduct {
 public:
   int maxProduct(std::vector<int>& nums) {
     
@@ -11,12 +11,11 @@ public:
     }
 
     auto iter = nums.begin();
-    int local_max = *iter;
-    int global_max = local_max;
+    int global_max = *iter;
     std::advance(iter,1);
 
-    int prev_max = local_max;
-    int prev_min = local_max;
+    int prev_max = global_max;
+    int prev_min = global_max;
 
     for(iter; iter != nums.end();) {
       int curr_num = *iter;
