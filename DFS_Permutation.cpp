@@ -25,4 +25,23 @@ public:
       dfs(nums,sol,sub_sol,visited,i);
     }
   }
+
+
+  std::vector<std::vector<int>> permute2(std::vector<int>& nums) {
+    std::vector<std::vector<int>> sol;
+    dfs2(nums,sol,0);
+    return sol;
+  }
+  
+  void dfs2(std::vector<int>&nums, std::vector<std::vector<int>>& sol, int curr_idx) {
+    if(curr_idx == nums.size()) {
+      sol.push_back(nums);
+      return;
+    }
+    for(size_t i = curr_idx; i < nums.size(); ++i) {
+      std::swap(nums[curr_idx],nums[i]);
+      dfs2(nums,sol,curr_idx+1);
+      std::swap(nums[curr_idx],nums[i]);
+    }
+  }
 };
