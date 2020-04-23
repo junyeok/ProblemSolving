@@ -4,7 +4,7 @@
 /**
  * board의 특정 위치에서 상/하/좌/우로만 이동가능할 때 반복 이동해서 word에 있는 모든 문자를 찾을 수 있는지에 대한 문제.
  * Backtracking으로 풀이함
- * 1. board[cur_row][cur_col]이 word의 알바벳과 같으면 dfs로 계속 탐색함. 이 때 재탐색되는 것을 방지하기 위해 null character로 해당 위치의 문자를 바꿔줌
+ * 1. board[cur_row][cur_col]이 word의 알파벳과 같으면 dfs로 계속 탐색함. 이 때 재탐색되는 것을 방지하기 위해 null character로 해당 위치의 문자를 바꿔줌
  * 2. 만약 해당 위치의 모든 다음 스텝의 단어가 다르다면 board의 문자를 다시 원상태로 바꿔준다. 
  * 
  */
@@ -57,28 +57,25 @@ public:
     word_size = word.size();
     if(m * n < word_size) return false;
     
-    _board = board;
-    _word = word;
-    
     for(size_t i = 0; i < m; ++i) {
       for(size_t j = 0; j < n; ++j) {
         std::vector<std::vector<bool>> visited(m,std::vector<bool>(n,false));
-        if(dfs(visited,0,i,j)) return true;
+        if(dfs(board, visited,0,i,j,word)) return true;
       }
     }
     return false;
   }
 
-  bool dfs(std::vector<std::vector<bool>>& visited, int cur_idx, int cur_row, int cur_col) {
-    if(cur_row < 0 || cur_col < 0 || cur_row >= m || cur_col >= n || visited[cur_row][cur_col] || _board[cur_row][cur_col] != _word[cur_idx] ) return false;
+  bool dfs(std::vector<std::vector<char>>& board, std::vector<std::vector<bool>>& visited, int cur_idx, int cur_row, int cur_col, std::string& word) {
+    if(cur_row < 0 || cur_col < 0 || cur_row >= m || cur_col >= n || visited[cur_row][cur_col] || board[cur_row][cur_col] != word[cur_idx] ) return false;
     
     visited[cur_row][cur_col] = true;
     if(cur_idx == word_size - 1) return true;
     
-    if(( dfs(visited,cur_idx+1,cur_row-1,cur_col) ) || 
-       ( dfs(visited,cur_idx+1,cur_row+1,cur_col) ) || 
-       ( dfs(visited,cur_idx+1,cur_row,cur_col-1) ) || 
-       ( dfs(visited,cur_idx+1,cur_row,cur_col+1) ) ){
+    if(( dfs(board,visited,cur_idx+1,cur_row-1,cur_col,word) ) || 
+       ( dfs(board,visited,cur_idx+1,cur_row+1,cur_col,word) ) || 
+       ( dfs(board,visited,cur_idx+1,cur_row,cur_col-1,word) ) || 
+       ( dfs(board,visited,cur_idx+1,cur_row,cur_col+1,word) ) ){
       return true;
     } 
 
@@ -86,7 +83,5 @@ public:
     return false;
   }
 
-  std::vector<std::vector<char>> _board;
-  std::string _word;
   int m,n,word_size;
 };
